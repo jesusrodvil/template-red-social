@@ -1,0 +1,40 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.layout[data-sidebar='left'] {
+  flex-direction: row-reverse;
+}
+
+.layout__main {
+  flex: 1;
+  min-width: 0;
+  padding: 1.5rem 2rem;
+}
+
+.layout__header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.layout__logo img {
+  display: block;
+  width: 48px;
+  height: 48px;
+}
+
+.layout__title {
+  margin: 0;
+  font-size: 2.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+.layout__content {
+  max-width: 640px;
+  margin: 0 auto;
+}
