@@ -1,11 +1,16 @@
 import { createBrowserRouter, RouterProvider } from 'react-router'
-import Sidebar from './components/Sidebar'
+import Layout from './components/Layout'
+import { pages } from './config/pages.config'
 import AppProvider from './context/AppProvider'
 
 const router = createBrowserRouter([
   {
-    path: '*',
-    element: <Sidebar />,
+    element: <Layout />,
+    children: pages.map((page) => ({
+      path: page.path,
+      element: <p className="muted">Contenido de {page.title}: pendiente.</p>,
+      handle: { title: page.title },
+    })),
   },
 ])
 

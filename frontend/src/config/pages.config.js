@@ -1,11 +1,12 @@
 export const pages = [
   {
     id: 'inicio',
-    path: '/',
+    path: '/inicio',
     title: 'Inicio',
+    icon: 'Home',
     type: 'feed',
     source: 'groupsFeed',
-    showInMenu: false,
+    showInMenu: true,
     visible: true,
     roles: ['admin', 'user'],
   },
