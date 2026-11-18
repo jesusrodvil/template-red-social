@@ -1,0 +1,80 @@
+.post {
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.post__header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.post__author {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.post__username {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.post__date {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.post__image {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  border-radius: 8px;
+}
+
+.post__footer {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.post__text {
+  flex: 1;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.post__actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.post__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.5rem;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.post__action:hover {
+  color: var(--color-secondary);
+  background: var(--secondary-soft);
+}
+
+.post__action--like[aria-pressed='true'] {
+  color: var(--color-secondary);
+}
