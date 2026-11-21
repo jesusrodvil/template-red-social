@@ -34,6 +34,12 @@
   color: var(--text-strong);
 }
 
+.layout__subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
 .layout__content {
   max-width: 640px;
   margin: 0 auto;
