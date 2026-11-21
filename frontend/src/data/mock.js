@@ -5,9 +5,27 @@ export const users = [
 ]
 
 export const groups = [
-  { id: 'g1', name: 'Amigos del cole', members: ['admin', 'lucia', 'pablo'] },
-  { id: 'g2', name: 'Equipo de pádel', members: ['admin', 'pablo'] },
-  { id: 'g3', name: 'Viaje a Lisboa', members: ['lucia', 'pablo'] },
+  {
+    id: 'g1',
+    name: 'Amigos del cole',
+    description: 'Cenas, quedadas y fotos de toda la vida.',
+    image: null,
+    members: ['admin', 'lucia', 'pablo'],
+  },
+  {
+    id: 'g2',
+    name: 'Equipo de pádel',
+    description: 'Partidos de los jueves y la liga del barrio.',
+    image: '/mock/foto-1.svg',
+    members: ['admin', 'pablo'],
+  },
+  {
+    id: 'g3',
+    name: 'Viaje a Lisboa',
+    description: 'Organización del viaje de primavera.',
+    image: null,
+    members: ['lucia', 'pablo'],
+  },
 ]
 
 export const posts = [
@@ -47,4 +65,34 @@ export const comments = [
   { id: 'c1', postId: 'p1', authorId: 'pablo', createdAt: '2026-11-15T19:30:00', text: '¡Yo me apunto!' },
   { id: 'c2', postId: 'p1', authorId: 'admin', createdAt: '2026-11-15T20:02:00', text: 'Reservo yo.' },
   { id: 'c3', postId: 'p2', authorId: 'lucia', createdAt: '2026-11-16T10:40:00', text: 'Qué paliza 😂' },
+]
+
+export const notifications = [
+  {
+    id: 'n1',
+    recipientId: 'admin',
+    sender: { type: 'user', id: 'pablo' },
+    text: 'Ha publicado en Equipo de pádel.',
+    createdAt: '2026-11-16T10:05:00',
+    read: false,
+    target: { groupId: 'g2', postId: 'p2' },
+  },
+  {
+    id: 'n2',
+    recipientId: 'admin',
+    sender: { type: 'group', id: 'g2' },
+    text: 'Te han añadido al grupo.',
+    createdAt: '2026-11-15T21:00:00',
+    read: false,
+    target: { groupId: 'g2' },
+  },
+  {
+    id: 'n3',
+    recipientId: 'admin',
+    sender: { type: 'user', id: 'lucia' },
+    text: 'Ha publicado en Amigos del cole.',
+    createdAt: '2026-11-15T19:20:00',
+    read: true,
+    target: { groupId: 'g1', postId: 'p1' },
+  },
 ]
