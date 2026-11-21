@@ -6,6 +6,9 @@ const appConfig = {
   limits: {
     postText: 280,
     commentText: 280,
+    groupName: 50,
+    groupDescription: 280,
   },
 }
+
 export default appConfig
