@@ -4,13 +4,16 @@ import Avatar from './Avatar'
 import Icon from './Icon'
 import './PostCard.css'
 
-export default function PostCard({ post, onOpenComments }) {
+export default function PostCard({ post, onOpenComments, highlighted = false }) {
   const [liked, setLiked] = useState(post.likedByMe)
   const likes = post.likes - Number(post.likedByMe) + Number(liked)
   const username = formatUsername(post.author)
 
   return (
-    <article className="post">
+    <article
+      id={`post-${post.id}`}
+      className={highlighted ? 'post post--highlighted' : 'post'}
+    >
       <header className="post__header">
         <Avatar user={post.author} size={36} />
         <span className="post__author">

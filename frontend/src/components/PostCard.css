@@ -6,6 +6,11 @@
   border-radius: 12px;
 }
 
+.post--highlighted {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
 .post__header {
   display: flex;
   align-items: center;
