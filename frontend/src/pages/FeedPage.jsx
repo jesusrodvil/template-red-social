@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router'
 import CommentsModal from '../components/CommentsModal'
+import PageActions from '../components/PageActions'
 import PostCard from '../components/PostCard'
 import { useApp } from '../context/app-context'
 import { useAsync } from '../hooks/useAsync'
@@ -15,20 +16,21 @@ export default function FeedPage({ page }) {
     async () => feedSources[page.source]({ user, params }),
     [page.source, user, params],
   )
-  const { data: posts, loading, error } = useAsync(loader)
+  const { data: posts, loading, error, reload } = useAsync(loader)
   const [commentsPostId, setCommentsPostId] = useState(null)
 
   useEffect(() => {
-    if (!posts || !highlightedId) return
+    if (loading || !highlightedId) return
     document.getElementById(highlightedId)?.scrollIntoView({ block: 'center' })
-  }, [posts, highlightedId])
+  }, [loading, highlightedId])
 
   if (loading) return <p className="muted">Cargando…</p>
   if (error) return <p className="muted">No se ha podido cargar el feed.</p>
-  if (posts.length === 0) return <p className="muted">Todavía no hay publicaciones.</p>
 
   return (
     <>
+      <PageActions page={page} />
+      {posts.length === 0 && <p className="muted">Todavía no hay publicaciones.</p>}
       {posts.map((post) => (
         <PostCard
           key={post.id}
@@ -41,6 +43,7 @@ export default function FeedPage({ page }) {
         <CommentsModal
           postId={commentsPostId}
           onClose={() => setCommentsPostId(null)}
+          onCommentAdded={reload}
         />
       )}
     </>
