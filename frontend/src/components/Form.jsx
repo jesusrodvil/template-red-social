@@ -1,34 +1,63 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import formsConfig from '../config/forms.config'
 import { useApp } from '../context/app-context'
-import { ApiError, formActions } from '../services/api'
+import { useAsync } from '../hooks/useAsync'
+import { ApiError, formActions, formLoaders } from '../services/api'
 import FormField from './FormField'
 import './Form.css'
 
-const emptyValue = (field) => (field.type === 'image' ? null : '')
+const emptyValue = (field) => {
+  if (field.type === 'image') return null
+  if (field.type === 'toggle') return false
+  return ''
+}
 
-const initialValues = (fields) =>
-  Object.fromEntries(fields.map((field) => [field.name, emptyValue(field)]))
+const initialValues = (fields, loaded = {}) =>
+  Object.fromEntries(fields.map((field) => [field.name, loaded[field.name] ?? emptyValue(field)]))
 
 function validate(fields, values) {
   const errors = {}
   for (const field of fields) {
     const value = values[field.name]
-    if (field.required && !value?.toString().trim()) {
+    const text = typeof value === 'string' ? value.trim() : value
+    if (field.required && !text) {
       errors[field.name] = 'Este campo es obligatorio.'
-    } else if (field.pattern && value && !new RegExp(field.pattern).test(value.trim())) {
+    } else if (field.minLength && text && text.length < field.minLength) {
+      errors[field.name] = `Tiene que tener al menos ${field.minLength} caracteres.`
+    } else if (field.pattern && text && !new RegExp(field.pattern).test(text)) {
       errors[field.name] = field.patternMessage ?? 'El formato no es válido.'
-    } else if (field.type === 'image' && value && !value.file.type.startsWith('image/')) {
+    } else if (field.matches && value !== values[field.matches]) {
+      errors[field.name] = field.matchesMessage ?? 'Los valores no coinciden.'
+    } else if (field.type === 'image' && value?.file && !value.file.type.startsWith('image/')) {
       errors[field.name] = 'El archivo tiene que ser una imagen.'
     }
   }
   return errors
 }
 
-export default function Form({ formId, context, onSuccess, onCancel, resetOnSuccess = false }) {
-  const form = formsConfig[formId]
+export default function Form(props) {
+  const form = formsConfig[props.formId]
+  if (!form.load) return <FormBody {...props} form={form} />
+  return <LoadedForm {...props} form={form} />
+}
+
+function LoadedForm(props) {
   const { user } = useApp()
-  const [values, setValues] = useState(() => initialValues(form.fields))
+  const loader = useCallback(
+    async () => formLoaders[props.form.load]({ user, ...props.context }),
+    [props.form.load, user, props.context],
+  )
+  const { data, loading, error } = useAsync(loader)
+
+  if (loading) return <p className="muted">Cargando…</p>
+  if (error) return <p className="muted">No se han podido cargar los datos.</p>
+  return <FormBody {...props} loaded={data} />
+}
+
+function FormBody({ form, loaded, context, onSuccess, onCancel, resetOnSuccess = false }) {
+  const { user } = useApp()
+  const fields = form.fields.filter((field) => !field.roles || field.roles.includes(user.role))
+  const [values, setValues] = useState(() => initialValues(fields, loaded))
   const [errors, setErrors] = useState({})
   const [sending, setSending] = useState(false)
   const [message, setMessage] = useState(null)
@@ -41,7 +70,7 @@ export default function Form({ formId, context, onSuccess, onCancel, resetOnSucc
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const newErrors = validate(form.fields, values)
+    const newErrors = validate(fields, values)
     setErrors(newErrors)
     if (Object.keys(newErrors).length > 0) return
 
@@ -49,7 +78,7 @@ export default function Form({ formId, context, onSuccess, onCancel, resetOnSucc
     setMessage(null)
     try {
       const result = await formActions[form.submit](values, { user, ...context })
-      if (resetOnSuccess) setValues(initialValues(form.fields))
+      if (resetOnSuccess) setValues(initialValues(fields))
       if (typeof result === 'string') setMessage({ type: 'success', text: result })
       setSending(false)
       onSuccess?.(result)
@@ -63,7 +92,7 @@ export default function Form({ formId, context, onSuccess, onCancel, resetOnSucc
 
   return (
     <form className="form" onSubmit={handleSubmit} noValidate>
-      {form.fields.map((field) => (
+      {fields.map((field) => (
         <FormField
           key={field.name}
           field={field}
