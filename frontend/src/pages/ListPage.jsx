@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { useParams } from 'react-router'
 import ListItem from '../components/list/ListItem'
 import PageActions from '../components/layout/PageActions'
+import Loading from '../components/ui/Loading'
 import { useApp } from '../context/app-context'
 import { useAsync } from '../hooks/useAsync'
 import { ApiError, itemActions, listSources } from '../services/api'
@@ -17,6 +18,8 @@ export default function ListPage({ page }) {
   const { data: items, loading, error, reload } = useAsync(loader)
   const [seenIds, setSeenIds] = useState(() => new Set())
   const [actionError, setActionError] = useState(null)
+  const [busy, setBusy] = useState(null)
+  const busyAction = busy?.items === items ? busy : null
 
   const handleSeen = (item) => {
     if (!page.onItemSeen || seenIds.has(item.id)) return
@@ -26,10 +29,12 @@ export default function ListPage({ page }) {
 
   const handleAction = async (item, action) => {
     setActionError(null)
+    setBusy({ itemId: item.id, actionId: action.id, items })
     try {
       await itemActions[action.action]({ user, item })
       reload()
     } catch (err) {
+      setBusy(null)
       setActionError(
         err instanceof ApiError ? err.message : 'No se ha podido completar la acción.',
       )
@@ -40,7 +45,7 @@ export default function ListPage({ page }) {
     <>
       <PageActions page={page} />
 
-      {loading && <p className="muted">Cargando…</p>}
+      {loading && <Loading />}
       {error && <p className="muted">No se ha podido cargar la lista.</p>}
       {actionError && <p className="form__message form__message--error">{actionError}</p>}
       {items?.length === 0 && (
@@ -55,6 +60,7 @@ export default function ListPage({ page }) {
               item={{ ...item, unread: item.unread && !seenIds.has(item.id) }}
               onSeen={handleSeen}
               onAction={handleAction}
+              busyActionId={busyAction?.itemId === item.id ? busyAction.actionId : null}
             />
           ))}
         </ul>

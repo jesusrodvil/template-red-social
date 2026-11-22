@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import themeConfig from '../config/theme.config'
+import Loading from '../components/ui/Loading'
 import { useAsync } from '../hooks/useAsync'
 import { useColorScheme } from '../hooks/useColorScheme'
 import { getCurrentUser, logout as endSession } from '../services/api'
@@ -43,7 +44,7 @@ export default function AppProvider({ children }) {
     refreshUser()
   }
 
-  if (loading) return null
+  if (loading) return <Loading fullScreen />
   if (error) return <p className="muted">No se ha podido cargar la sesión.</p>
 
   return (

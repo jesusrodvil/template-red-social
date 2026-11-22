@@ -3,6 +3,8 @@ import formsConfig from '../../config/forms.config'
 import { useApp } from '../../context/app-context'
 import { useAsync } from '../../hooks/useAsync'
 import { ApiError, formActions, formLoaders } from '../../services/api'
+import Loading from '../ui/Loading'
+import Spinner from '../ui/Spinner'
 import FormField from './FormField'
 import './Form.css'
 
@@ -49,7 +51,7 @@ function LoadedForm(props) {
   )
   const { data, loading, error } = useAsync(loader)
 
-  if (loading) return <p className="muted">Cargando…</p>
+  if (loading) return <Loading />
   if (error) return <p className="muted">No se han podido cargar los datos.</p>
   return <FormBody {...props} loaded={data} />
 }
@@ -113,6 +115,7 @@ function FormBody({ form, loaded, context, onSuccess, onCancel, resetOnSuccess =
           </button>
         )}
         <button type="submit" className="button button--primary" disabled={sending}>
+          {sending && <Spinner size="sm" />}
           {form.submitLabel}
         </button>
       </div>

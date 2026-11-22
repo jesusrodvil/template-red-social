@@ -3,6 +3,7 @@ import { useAsync } from '../../hooks/useAsync'
 import { getComments } from '../../services/api'
 import { formatDate } from '../../utils/format'
 import Avatar from '../ui/Avatar'
+import Loading from '../ui/Loading'
 import Form from '../form/Form'
 import Modal from '../ui/Modal'
 import './CommentsModal.css'
@@ -18,7 +19,7 @@ export default function CommentsModal({ postId, onClose, onCommentAdded }) {
 
   return (
     <Modal title="Comentarios" onClose={onClose}>
-      {loading && <p className="muted">Cargando…</p>}
+      {loading && <Loading label="Cargando comentarios…" />}
       {error && <p className="muted">No se han podido cargar los comentarios.</p>}
       {comments?.length === 0 && <p className="muted">Todavía no hay comentarios.</p>}
       <ul className="comments">

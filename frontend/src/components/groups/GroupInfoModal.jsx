@@ -5,6 +5,7 @@ import { useAsync } from '../../hooks/useAsync'
 import { ApiError, getGroupInfo, leaveGroup } from '../../services/api'
 import { pathTo } from '../../utils/routes'
 import ConfirmButton from '../ui/ConfirmButton'
+import Loading from '../ui/Loading'
 import Form from '../form/Form'
 import ListItem from '../list/ListItem'
 import Modal from '../ui/Modal'
@@ -37,7 +38,7 @@ export default function GroupInfoModal({ onClose }) {
 
   return (
     <Modal title={group?.name ?? 'Grupo'} onClose={onClose}>
-      {loading && <p className="muted">Cargando…</p>}
+      {loading && <Loading />}
       {error && <p className="muted">No se ha podido cargar el grupo.</p>}
 
       {group && (

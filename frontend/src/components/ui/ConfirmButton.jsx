@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Spinner from './Spinner'
 import './ConfirmButton.css'
 
 export default function ConfirmButton({ label, message, confirmLabel, danger = false, onConfirm }) {
@@ -40,6 +41,7 @@ export default function ConfirmButton({ label, message, confirmLabel, danger = f
           disabled={sending}
           onClick={handleConfirm}
         >
+          {sending && <Spinner size="sm" />}
           {confirmLabel}
         </button>
       </div>

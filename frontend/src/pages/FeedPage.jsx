@@ -3,6 +3,7 @@ import { useLocation, useParams } from 'react-router'
 import CommentsModal from '../components/feed/CommentsModal'
 import PageActions from '../components/layout/PageActions'
 import PostCard from '../components/feed/PostCard'
+import Loading from '../components/ui/Loading'
 import { useApp } from '../context/app-context'
 import { useAsync } from '../hooks/useAsync'
 import { feedSources } from '../services/api'
@@ -24,7 +25,7 @@ export default function FeedPage({ page }) {
     document.getElementById(highlightedId)?.scrollIntoView({ block: 'center' })
   }, [loading, highlightedId])
 
-  if (loading) return <p className="muted">Cargando…</p>
+  if (loading) return <Loading />
   if (error) return <p className="muted">No se ha podido cargar el feed.</p>
 
   return (
