@@ -1,11 +1,10 @@
 import { useCallback, useState } from 'react'
 import { useParams } from 'react-router'
-import FormModal from '../components/FormModal'
-import Icon from '../components/Icon'
 import ListItem from '../components/ListItem'
+import PageActions from '../components/PageActions'
 import { useApp } from '../context/app-context'
 import { useAsync } from '../hooks/useAsync'
-import { itemActions, listSources } from '../services/api'
+import { ApiError, itemActions, listSources } from '../services/api'
 import './ListPage.css'
 
 export default function ListPage({ page }) {
@@ -15,9 +14,9 @@ export default function ListPage({ page }) {
     async () => listSources[page.source]({ user, params }),
     [page.source, user, params],
   )
-  const { data: items, loading, error } = useAsync(loader)
+  const { data: items, loading, error, reload } = useAsync(loader)
   const [seenIds, setSeenIds] = useState(() => new Set())
-  const [openForm, setOpenForm] = useState(null)
+  const [actionError, setActionError] = useState(null)
 
   const handleSeen = (item) => {
     if (!page.onItemSeen || seenIds.has(item.id)) return
@@ -25,26 +24,25 @@ export default function ListPage({ page }) {
     itemActions[page.onItemSeen]({ user, item })
   }
 
+  const handleAction = async (item, action) => {
+    setActionError(null)
+    try {
+      await itemActions[action.action]({ user, item })
+      reload()
+    } catch (err) {
+      setActionError(
+        err instanceof ApiError ? err.message : 'No se ha podido completar la acción.',
+      )
+    }
+  }
+
   return (
     <>
-      {page.actions?.length > 0 && (
-        <div className="list-page__toolbar">
-          {page.actions.map((action) => (
-            <button
-              key={action.id}
-              type="button"
-              className="button button--primary"
-              onClick={() => setOpenForm(action.form)}
-            >
-              <Icon name={action.icon} size={18} />
-              {action.label}
-            </button>
-          ))}
-        </div>
-      )}
+      <PageActions page={page} />
 
       {loading && <p className="muted">Cargando…</p>}
       {error && <p className="muted">No se ha podido cargar la lista.</p>}
+      {actionError && <p className="form__message form__message--error">{actionError}</p>}
       {items?.length === 0 && (
         <p className="muted">{page.emptyMessage ?? 'No hay elementos.'}</p>
       )}
@@ -56,12 +54,11 @@ export default function ListPage({ page }) {
               key={item.id}
               item={{ ...item, unread: item.unread && !seenIds.has(item.id) }}
               onSeen={handleSeen}
+              onAction={handleAction}
             />
           ))}
         </ul>
       )}
-
-      {openForm && <FormModal formId={openForm} onClose={() => setOpenForm(null)} />}
     </>
   )
 }

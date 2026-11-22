@@ -3,6 +3,7 @@ import {
   ChevronRight,
   Heart,
   LogOut,
+  Menu,
   MessageCircle,
   Plus,
   Settings,
@@ -10,7 +11,7 @@ import {
   X,
 } from 'lucide-react'
 
-const icons = { Bell, ChevronRight, Heart, LogOut, MessageCircle, Plus, Settings, Users, X }
+const icons = { Bell, ChevronRight, Heart, LogOut, Menu, MessageCircle, Plus, Settings, Users, X }
 
 export default function Icon({ name, size = 20, ...props }) {
   const Component = icons[name]
