@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { formatDate, formatUsername } from '../utils/format'
-import Avatar from './Avatar'
-import Icon from './Icon'
+import { formatDate, formatUsername } from '../../utils/format'
+import Avatar from '../ui/Avatar'
+import Icon from '../ui/Icon'
 import './PostCard.css'
 
 export default function PostCard({ post, onOpenComments, highlighted = false }) {

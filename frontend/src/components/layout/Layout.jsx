@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, Outlet, useMatches } from 'react-router'
-import appConfig from '../config/app.config'
+import appConfig from '../../config/app.config'
 import Sidebar from './Sidebar'
 import './Layout.css'
 

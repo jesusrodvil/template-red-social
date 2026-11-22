@@ -1,9 +1,9 @@
 import { Link, NavLink } from 'react-router'
-import { menuConfig, pages } from '../config/pages.config'
-import { useApp } from '../context/app-context'
-import { formatUsername } from '../utils/format'
-import Avatar from './Avatar'
-import Icon from './Icon'
+import { menuConfig, pages } from '../../config/pages.config'
+import { useApp } from '../../context/app-context'
+import { formatUsername } from '../../utils/format'
+import Avatar from '../ui/Avatar'
+import Icon from '../ui/Icon'
 import './Sidebar.css'
 
 export default function Sidebar() {

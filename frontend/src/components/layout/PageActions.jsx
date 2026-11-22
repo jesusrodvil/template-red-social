@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import FormModal from './FormModal'
-import Icon from './Icon'
-import { modals } from './modals'
+import FormModal from '../form/FormModal'
+import Icon from '../ui/Icon'
+import { modals } from '../registries/modals'
 import './PageActions.css'
 
 export default function PageActions({ page }) {

@@ -1,0 +1,445 @@
+From d0fd7eb88ece48be6ab2378a13b87f1fd483955c Mon Sep 17 00:00:00 2001
+From: tmp <tmp@example.com>
+Date: Sun, 22 Nov 2026 17:32:49 +0100
+Subject: [PATCH] Reorganizar components
+
+---
+ frontend/src/App.jsx                             |  2 +-
+ .../src/components/{ => feed}/CommentsModal.css  |  0
+ .../src/components/{ => feed}/CommentsModal.jsx  | 12 ++++++------
+ frontend/src/components/{ => feed}/PostCard.css  |  0
+ frontend/src/components/{ => feed}/PostCard.jsx  |  6 +++---
+ frontend/src/components/{ => form}/Form.css      |  0
+ frontend/src/components/{ => form}/Form.jsx      |  8 ++++----
+ frontend/src/components/{ => form}/FormField.css |  0
+ frontend/src/components/{ => form}/FormField.jsx |  0
+ frontend/src/components/{ => form}/FormModal.jsx |  4 ++--
+ .../components/{ => groups}/GroupInfoModal.css   |  0
+ .../components/{ => groups}/GroupInfoModal.jsx   | 16 ++++++++--------
+ frontend/src/components/{ => layout}/Layout.css  |  0
+ frontend/src/components/{ => layout}/Layout.jsx  |  2 +-
+ .../src/components/{ => layout}/PageActions.css  |  0
+ .../src/components/{ => layout}/PageActions.jsx  |  6 +++---
+ frontend/src/components/{ => layout}/Sidebar.css |  0
+ frontend/src/components/{ => layout}/Sidebar.jsx | 10 +++++-----
+ frontend/src/components/{ => list}/ListItem.css  |  0
+ frontend/src/components/{ => list}/ListItem.jsx  |  8 ++++----
+ frontend/src/components/modals.js                |  5 -----
+ frontend/src/components/registries/modals.js     |  5 +++++
+ .../{ => registries}/settingsSections.js         |  2 +-
+ .../{ => settings}/AppearanceSettings.jsx        |  4 ++--
+ frontend/src/components/{ => ui}/Avatar.css      |  0
+ frontend/src/components/{ => ui}/Avatar.jsx      |  0
+ .../src/components/{ => ui}/ConfirmButton.css    |  0
+ .../src/components/{ => ui}/ConfirmButton.jsx    |  0
+ frontend/src/components/{ => ui}/Icon.jsx        |  0
+ frontend/src/components/{ => ui}/Modal.css       |  0
+ frontend/src/components/{ => ui}/Modal.jsx       |  0
+ frontend/src/pages/FeedPage.jsx                  |  6 +++---
+ frontend/src/pages/ListPage.jsx                  |  4 ++--
+ frontend/src/pages/LoginPage.jsx                 |  2 +-
+ frontend/src/pages/SettingsPage.jsx              |  6 +++---
+ 35 files changed, 54 insertions(+), 54 deletions(-)
+ rename frontend/src/components/{ => feed}/CommentsModal.css (100%)
+ rename frontend/src/components/{ => feed}/CommentsModal.jsx (84%)
+ rename frontend/src/components/{ => feed}/PostCard.css (100%)
+ rename frontend/src/components/{ => feed}/PostCard.jsx (93%)
+ rename frontend/src/components/{ => form}/Form.css (100%)
+ rename frontend/src/components/{ => form}/Form.jsx (94%)
+ rename frontend/src/components/{ => form}/FormField.css (100%)
+ rename frontend/src/components/{ => form}/FormField.jsx (100%)
+ rename frontend/src/components/{ => form}/FormModal.jsx (74%)
+ rename frontend/src/components/{ => groups}/GroupInfoModal.css (100%)
+ rename frontend/src/components/{ => groups}/GroupInfoModal.jsx (85%)
+ rename frontend/src/components/{ => layout}/Layout.css (100%)
+ rename frontend/src/components/{ => layout}/Layout.jsx (95%)
+ rename frontend/src/components/{ => layout}/PageActions.css (100%)
+ rename frontend/src/components/{ => layout}/PageActions.jsx (89%)
+ rename frontend/src/components/{ => layout}/Sidebar.css (100%)
+ rename frontend/src/components/{ => layout}/Sidebar.jsx (88%)
+ rename frontend/src/components/{ => list}/ListItem.css (100%)
+ rename frontend/src/components/{ => list}/ListItem.jsx (92%)
+ delete mode 100644 frontend/src/components/modals.js
+ create mode 100644 frontend/src/components/registries/modals.js
+ rename frontend/src/components/{ => registries}/settingsSections.js (51%)
+ rename frontend/src/components/{ => settings}/AppearanceSettings.jsx (89%)
+ rename frontend/src/components/{ => ui}/Avatar.css (100%)
+ rename frontend/src/components/{ => ui}/Avatar.jsx (100%)
+ rename frontend/src/components/{ => ui}/ConfirmButton.css (100%)
+ rename frontend/src/components/{ => ui}/ConfirmButton.jsx (100%)
+ rename frontend/src/components/{ => ui}/Icon.jsx (100%)
+ rename frontend/src/components/{ => ui}/Modal.css (100%)
+ rename frontend/src/components/{ => ui}/Modal.jsx (100%)
+
+diff --git a/frontend/src/App.jsx b/frontend/src/App.jsx
+index 5079d0a..9fb184f 100644
+--- a/frontend/src/App.jsx
++++ b/frontend/src/App.jsx
+@@ -1,5 +1,5 @@
+ import { createBrowserRouter, RouterProvider } from 'react-router'
+-import Layout from './components/Layout'
++import Layout from './components/layout/Layout'
+ import { pages } from './config/pages.config'
+ import { useApp } from './context/app-context'
+ import AppProvider from './context/AppProvider'
+diff --git a/frontend/src/components/CommentsModal.css b/frontend/src/components/feed/CommentsModal.css
+similarity index 100%
+rename from frontend/src/components/CommentsModal.css
+rename to frontend/src/components/feed/CommentsModal.css
+diff --git a/frontend/src/components/CommentsModal.jsx b/frontend/src/components/feed/CommentsModal.jsx
+similarity index 84%
+rename from frontend/src/components/CommentsModal.jsx
+rename to frontend/src/components/feed/CommentsModal.jsx
+index 6891f24..44e0eb0 100644
+--- a/frontend/src/components/CommentsModal.jsx
++++ b/frontend/src/components/feed/CommentsModal.jsx
+@@ -1,10 +1,10 @@
+ import { useCallback } from 'react'
+-import { useAsync } from '../hooks/useAsync'
+-import { getComments } from '../services/api'
+-import { formatDate } from '../utils/format'
+-import Avatar from './Avatar'
+-import Form from './Form'
+-import Modal from './Modal'
++import { useAsync } from '../../hooks/useAsync'
++import { getComments } from '../../services/api'
++import { formatDate } from '../../utils/format'
++import Avatar from '../ui/Avatar'
++import Form from '../form/Form'
++import Modal from '../ui/Modal'
+ import './CommentsModal.css'
+ 
+ export default function CommentsModal({ postId, onClose, onCommentAdded }) {
+diff --git a/frontend/src/components/PostCard.css b/frontend/src/components/feed/PostCard.css
+similarity index 100%
+rename from frontend/src/components/PostCard.css
+rename to frontend/src/components/feed/PostCard.css
+diff --git a/frontend/src/components/PostCard.jsx b/frontend/src/components/feed/PostCard.jsx
+similarity index 93%
+rename from frontend/src/components/PostCard.jsx
+rename to frontend/src/components/feed/PostCard.jsx
+index 1c58799..f4db0b5 100644
+--- a/frontend/src/components/PostCard.jsx
++++ b/frontend/src/components/feed/PostCard.jsx
+@@ -1,7 +1,7 @@
+ import { useState } from 'react'
+-import { formatDate, formatUsername } from '../utils/format'
+-import Avatar from './Avatar'
+-import Icon from './Icon'
++import { formatDate, formatUsername } from '../../utils/format'
++import Avatar from '../ui/Avatar'
++import Icon from '../ui/Icon'
+ import './PostCard.css'
+ 
+ export default function PostCard({ post, onOpenComments, highlighted = false }) {
+diff --git a/frontend/src/components/Form.css b/frontend/src/components/form/Form.css
+similarity index 100%
+rename from frontend/src/components/Form.css
+rename to frontend/src/components/form/Form.css
+diff --git a/frontend/src/components/Form.jsx b/frontend/src/components/form/Form.jsx
+similarity index 94%
+rename from frontend/src/components/Form.jsx
+rename to frontend/src/components/form/Form.jsx
+index 9bee02b..cfd2cc2 100644
+--- a/frontend/src/components/Form.jsx
++++ b/frontend/src/components/form/Form.jsx
+@@ -1,8 +1,8 @@
+ import { useCallback, useState } from 'react'
+-import formsConfig from '../config/forms.config'
+-import { useApp } from '../context/app-context'
+-import { useAsync } from '../hooks/useAsync'
+-import { ApiError, formActions, formLoaders } from '../services/api'
++import formsConfig from '../../config/forms.config'
++import { useApp } from '../../context/app-context'
++import { useAsync } from '../../hooks/useAsync'
++import { ApiError, formActions, formLoaders } from '../../services/api'
+ import FormField from './FormField'
+ import './Form.css'
+ 
+diff --git a/frontend/src/components/FormField.css b/frontend/src/components/form/FormField.css
+similarity index 100%
+rename from frontend/src/components/FormField.css
+rename to frontend/src/components/form/FormField.css
+diff --git a/frontend/src/components/FormField.jsx b/frontend/src/components/form/FormField.jsx
+similarity index 100%
+rename from frontend/src/components/FormField.jsx
+rename to frontend/src/components/form/FormField.jsx
+diff --git a/frontend/src/components/FormModal.jsx b/frontend/src/components/form/FormModal.jsx
+similarity index 74%
+rename from frontend/src/components/FormModal.jsx
+rename to frontend/src/components/form/FormModal.jsx
+index ff8c930..73e0bc5 100644
+--- a/frontend/src/components/FormModal.jsx
++++ b/frontend/src/components/form/FormModal.jsx
+@@ -1,6 +1,6 @@
+-import formsConfig from '../config/forms.config'
++import formsConfig from '../../config/forms.config'
+ import Form from './Form'
+-import Modal from './Modal'
++import Modal from '../ui/Modal'
+ 
+ export default function FormModal({ formId, onClose }) {
+   return (
+diff --git a/frontend/src/components/GroupInfoModal.css b/frontend/src/components/groups/GroupInfoModal.css
+similarity index 100%
+rename from frontend/src/components/GroupInfoModal.css
+rename to frontend/src/components/groups/GroupInfoModal.css
+diff --git a/frontend/src/components/GroupInfoModal.jsx b/frontend/src/components/groups/GroupInfoModal.jsx
+similarity index 85%
+rename from frontend/src/components/GroupInfoModal.jsx
+rename to frontend/src/components/groups/GroupInfoModal.jsx
+index 496bd12..a792427 100644
+--- a/frontend/src/components/GroupInfoModal.jsx
++++ b/frontend/src/components/groups/GroupInfoModal.jsx
+@@ -1,13 +1,13 @@
+ import { useCallback, useState } from 'react'
+ import { useNavigate, useParams } from 'react-router'
+-import { useApp } from '../context/app-context'
+-import { useAsync } from '../hooks/useAsync'
+-import { ApiError, getGroupInfo, leaveGroup } from '../services/api'
+-import { pathTo } from '../utils/routes'
+-import ConfirmButton from './ConfirmButton'
+-import Form from './Form'
+-import ListItem from './ListItem'
+-import Modal from './Modal'
++import { useApp } from '../../context/app-context'
++import { useAsync } from '../../hooks/useAsync'
++import { ApiError, getGroupInfo, leaveGroup } from '../../services/api'
++import { pathTo } from '../../utils/routes'
++import ConfirmButton from '../ui/ConfirmButton'
++import Form from '../form/Form'
++import ListItem from '../list/ListItem'
++import Modal from '../ui/Modal'
+ import './GroupInfoModal.css'
+ 
+ function leaveMessage(group) {
+diff --git a/frontend/src/components/Layout.css b/frontend/src/components/layout/Layout.css
+similarity index 100%
+rename from frontend/src/components/Layout.css
+rename to frontend/src/components/layout/Layout.css
+diff --git a/frontend/src/components/Layout.jsx b/frontend/src/components/layout/Layout.jsx
+similarity index 95%
+rename from frontend/src/components/Layout.jsx
+rename to frontend/src/components/layout/Layout.jsx
+index 4a91fec..3338ed7 100644
+--- a/frontend/src/components/Layout.jsx
++++ b/frontend/src/components/layout/Layout.jsx
+@@ -1,6 +1,6 @@
+ import { useEffect, useState } from 'react'
+ import { Link, Outlet, useMatches } from 'react-router'
+-import appConfig from '../config/app.config'
++import appConfig from '../../config/app.config'
+ import Sidebar from './Sidebar'
+ import './Layout.css'
+ 
+diff --git a/frontend/src/components/PageActions.css b/frontend/src/components/layout/PageActions.css
+similarity index 100%
+rename from frontend/src/components/PageActions.css
+rename to frontend/src/components/layout/PageActions.css
+diff --git a/frontend/src/components/PageActions.jsx b/frontend/src/components/layout/PageActions.jsx
+similarity index 89%
+rename from frontend/src/components/PageActions.jsx
+rename to frontend/src/components/layout/PageActions.jsx
+index a919b65..a7d7a16 100644
+--- a/frontend/src/components/PageActions.jsx
++++ b/frontend/src/components/layout/PageActions.jsx
+@@ -1,7 +1,7 @@
+ import { useState } from 'react'
+-import FormModal from './FormModal'
+-import Icon from './Icon'
+-import { modals } from './modals'
++import FormModal from '../form/FormModal'
++import Icon from '../ui/Icon'
++import { modals } from '../registries/modals'
+ import './PageActions.css'
+ 
+ export default function PageActions({ page }) {
+diff --git a/frontend/src/components/Sidebar.css b/frontend/src/components/layout/Sidebar.css
+similarity index 100%
+rename from frontend/src/components/Sidebar.css
+rename to frontend/src/components/layout/Sidebar.css
+diff --git a/frontend/src/components/Sidebar.jsx b/frontend/src/components/layout/Sidebar.jsx
+similarity index 88%
+rename from frontend/src/components/Sidebar.jsx
+rename to frontend/src/components/layout/Sidebar.jsx
+index 7c06338..5c6a5cd 100644
+--- a/frontend/src/components/Sidebar.jsx
++++ b/frontend/src/components/layout/Sidebar.jsx
+@@ -1,9 +1,9 @@
+ import { Link, NavLink } from 'react-router'
+-import { menuConfig, pages } from '../config/pages.config'
+-import { useApp } from '../context/app-context'
+-import { formatUsername } from '../utils/format'
+-import Avatar from './Avatar'
+-import Icon from './Icon'
++import { menuConfig, pages } from '../../config/pages.config'
++import { useApp } from '../../context/app-context'
++import { formatUsername } from '../../utils/format'
++import Avatar from '../ui/Avatar'
++import Icon from '../ui/Icon'
+ import './Sidebar.css'
+ 
+ export default function Sidebar() {
+diff --git a/frontend/src/components/ListItem.css b/frontend/src/components/list/ListItem.css
+similarity index 100%
+rename from frontend/src/components/ListItem.css
+rename to frontend/src/components/list/ListItem.css
+diff --git a/frontend/src/components/ListItem.jsx b/frontend/src/components/list/ListItem.jsx
+similarity index 92%
+rename from frontend/src/components/ListItem.jsx
+rename to frontend/src/components/list/ListItem.jsx
+index 8f8f8df..b2a49c3 100644
+--- a/frontend/src/components/ListItem.jsx
++++ b/frontend/src/components/list/ListItem.jsx
+@@ -1,8 +1,8 @@
+ import { Link } from 'react-router'
+-import { formatDate } from '../utils/format'
+-import { pathTo } from '../utils/routes'
+-import Avatar from './Avatar'
+-import Icon from './Icon'
++import { formatDate } from '../../utils/format'
++import { pathTo } from '../../utils/routes'
++import Avatar from '../ui/Avatar'
++import Icon from '../ui/Icon'
+ import './ListItem.css'
+ 
+ export default function ListItem({ item, onSeen, onAction }) {
+diff --git a/frontend/src/components/modals.js b/frontend/src/components/modals.js
+deleted file mode 100644
+index 005e3bd..0000000
+--- a/frontend/src/components/modals.js
++++ /dev/null
+@@ -1,5 +0,0 @@
+-import GroupInfoModal from './GroupInfoModal'
+-
+-export const modals = {
+-  groupInfo: GroupInfoModal,
+-}
+\ No newline at end of file
+diff --git a/frontend/src/components/registries/modals.js b/frontend/src/components/registries/modals.js
+new file mode 100644
+index 0000000..7bd5a77
+--- /dev/null
++++ b/frontend/src/components/registries/modals.js
+@@ -0,0 +1,5 @@
++import GroupInfoModal from '../groups/GroupInfoModal'
++
++export const modals = {
++  groupInfo: GroupInfoModal,
++}
+\ No newline at end of file
+diff --git a/frontend/src/components/settingsSections.js b/frontend/src/components/registries/settingsSections.js
+similarity index 51%
+rename from frontend/src/components/settingsSections.js
+rename to frontend/src/components/registries/settingsSections.js
+index 8505345..d23627e 100644
+--- a/frontend/src/components/settingsSections.js
++++ b/frontend/src/components/registries/settingsSections.js
+@@ -1,4 +1,4 @@
+-import AppearanceSettings from './AppearanceSettings'
++import AppearanceSettings from '../settings/AppearanceSettings'
+ 
+ export const settingsSections = {
+   appearance: AppearanceSettings,
+diff --git a/frontend/src/components/AppearanceSettings.jsx b/frontend/src/components/settings/AppearanceSettings.jsx
+similarity index 89%
+rename from frontend/src/components/AppearanceSettings.jsx
+rename to frontend/src/components/settings/AppearanceSettings.jsx
+index b03131d..b9ee926 100644
+--- a/frontend/src/components/AppearanceSettings.jsx
++++ b/frontend/src/components/settings/AppearanceSettings.jsx
+@@ -1,5 +1,5 @@
+-import { useApp } from '../context/app-context'
+-import FormField from './FormField'
++import { useApp } from '../../context/app-context'
++import FormField from '../form/FormField'
+ 
+ export default function AppearanceSettings() {
+   const { themeMode, scheme, setThemeMode } = useApp()
+diff --git a/frontend/src/components/Avatar.css b/frontend/src/components/ui/Avatar.css
+similarity index 100%
+rename from frontend/src/components/Avatar.css
+rename to frontend/src/components/ui/Avatar.css
+diff --git a/frontend/src/components/Avatar.jsx b/frontend/src/components/ui/Avatar.jsx
+similarity index 100%
+rename from frontend/src/components/Avatar.jsx
+rename to frontend/src/components/ui/Avatar.jsx
+diff --git a/frontend/src/components/ConfirmButton.css b/frontend/src/components/ui/ConfirmButton.css
+similarity index 100%
+rename from frontend/src/components/ConfirmButton.css
+rename to frontend/src/components/ui/ConfirmButton.css
+diff --git a/frontend/src/components/ConfirmButton.jsx b/frontend/src/components/ui/ConfirmButton.jsx
+similarity index 100%
+rename from frontend/src/components/ConfirmButton.jsx
+rename to frontend/src/components/ui/ConfirmButton.jsx
+diff --git a/frontend/src/components/Icon.jsx b/frontend/src/components/ui/Icon.jsx
+similarity index 100%
+rename from frontend/src/components/Icon.jsx
+rename to frontend/src/components/ui/Icon.jsx
+diff --git a/frontend/src/components/Modal.css b/frontend/src/components/ui/Modal.css
+similarity index 100%
+rename from frontend/src/components/Modal.css
+rename to frontend/src/components/ui/Modal.css
+diff --git a/frontend/src/components/Modal.jsx b/frontend/src/components/ui/Modal.jsx
+similarity index 100%
+rename from frontend/src/components/Modal.jsx
+rename to frontend/src/components/ui/Modal.jsx
+diff --git a/frontend/src/pages/FeedPage.jsx b/frontend/src/pages/FeedPage.jsx
+index 6a6453d..58ab5c4 100644
+--- a/frontend/src/pages/FeedPage.jsx
++++ b/frontend/src/pages/FeedPage.jsx
+@@ -1,8 +1,8 @@
+ import { useCallback, useEffect, useState } from 'react'
+ import { useLocation, useParams } from 'react-router'
+-import CommentsModal from '../components/CommentsModal'
+-import PageActions from '../components/PageActions'
+-import PostCard from '../components/PostCard'
++import CommentsModal from '../components/feed/CommentsModal'
++import PageActions from '../components/layout/PageActions'
++import PostCard from '../components/feed/PostCard'
+ import { useApp } from '../context/app-context'
+ import { useAsync } from '../hooks/useAsync'
+ import { feedSources } from '../services/api'
+diff --git a/frontend/src/pages/ListPage.jsx b/frontend/src/pages/ListPage.jsx
+index 2a5d7e8..8e6c0e3 100644
+--- a/frontend/src/pages/ListPage.jsx
++++ b/frontend/src/pages/ListPage.jsx
+@@ -1,7 +1,7 @@
+ import { useCallback, useState } from 'react'
+ import { useParams } from 'react-router'
+-import ListItem from '../components/ListItem'
+-import PageActions from '../components/PageActions'
++import ListItem from '../components/list/ListItem'
++import PageActions from '../components/layout/PageActions'
+ import { useApp } from '../context/app-context'
+ import { useAsync } from '../hooks/useAsync'
+ import { ApiError, itemActions, listSources } from '../services/api'
+diff --git a/frontend/src/pages/LoginPage.jsx b/frontend/src/pages/LoginPage.jsx
+index 428b746..963f1ac 100644
+--- a/frontend/src/pages/LoginPage.jsx
++++ b/frontend/src/pages/LoginPage.jsx
+@@ -1,5 +1,5 @@
+ import { useEffect, useState } from 'react'
+-import Form from '../components/Form'
++import Form from '../components/form/Form'
+ import appConfig from '../config/app.config'
+ import { useApp } from '../context/app-context'
+ import './LoginPage.css'
+diff --git a/frontend/src/pages/SettingsPage.jsx b/frontend/src/pages/SettingsPage.jsx
+index e8a25c3..5a729e8 100644
+--- a/frontend/src/pages/SettingsPage.jsx
++++ b/frontend/src/pages/SettingsPage.jsx
+@@ -1,7 +1,7 @@
+ import { useState } from 'react'
+-import ConfirmButton from '../components/ConfirmButton'
+-import Form from '../components/Form'
+-import { settingsSections } from '../components/settingsSections'
++import ConfirmButton from '../components/ui/ConfirmButton'
++import Form from '../components/form/Form'
++import { settingsSections } from '../components/registries/settingsSections'
+ import { useApp } from '../context/app-context'
+ import { ApiError, confirmActions } from '../services/api'
+ import './SettingsPage.css'
+-- 
+2.43.0
+

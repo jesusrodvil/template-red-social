@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router'
-import Layout from './components/Layout'
+import Layout from './components/layout/Layout'
 import { pages } from './config/pages.config'
 import { useApp } from './context/app-context'
 import AppProvider from './context/AppProvider'

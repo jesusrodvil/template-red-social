@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Form from '../components/Form'
+import Form from '../components/form/Form'
 import appConfig from '../config/app.config'
 import { useApp } from '../context/app-context'
 import './LoginPage.css'

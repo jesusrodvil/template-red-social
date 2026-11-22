@@ -1,5 +1,5 @@
-import { useApp } from '../context/app-context'
-import FormField from './FormField'
+import { useApp } from '../../context/app-context'
+import FormField from '../form/FormField'
 
 export default function AppearanceSettings() {
   const { themeMode, scheme, setThemeMode } = useApp()

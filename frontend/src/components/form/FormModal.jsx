@@ -1,6 +1,6 @@
-import formsConfig from '../config/forms.config'
+import formsConfig from '../../config/forms.config'
 import Form from './Form'
-import Modal from './Modal'
+import Modal from '../ui/Modal'
 
 export default function FormModal({ formId, onClose }) {
   return (

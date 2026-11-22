@@ -1,8 +1,8 @@
 import { Link } from 'react-router'
-import { formatDate } from '../utils/format'
-import { pathTo } from '../utils/routes'
-import Avatar from './Avatar'
-import Icon from './Icon'
+import { formatDate } from '../../utils/format'
+import { pathTo } from '../../utils/routes'
+import Avatar from '../ui/Avatar'
+import Icon from '../ui/Icon'
 import './ListItem.css'
 
 export default function ListItem({ item, onSeen, onAction }) {

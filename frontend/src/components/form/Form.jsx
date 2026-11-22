@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
-import formsConfig from '../config/forms.config'
-import { useApp } from '../context/app-context'
-import { useAsync } from '../hooks/useAsync'
-import { ApiError, formActions, formLoaders } from '../services/api'
+import formsConfig from '../../config/forms.config'
+import { useApp } from '../../context/app-context'
+import { useAsync } from '../../hooks/useAsync'
+import { ApiError, formActions, formLoaders } from '../../services/api'
 import FormField from './FormField'
 import './Form.css'
 

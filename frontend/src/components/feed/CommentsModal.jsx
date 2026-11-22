@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
-import { useAsync } from '../hooks/useAsync'
-import { getComments } from '../services/api'
-import { formatDate } from '../utils/format'
-import Avatar from './Avatar'
-import Form from './Form'
-import Modal from './Modal'
+import { useAsync } from '../../hooks/useAsync'
+import { getComments } from '../../services/api'
+import { formatDate } from '../../utils/format'
+import Avatar from '../ui/Avatar'
+import Form from '../form/Form'
+import Modal from '../ui/Modal'
 import './CommentsModal.css'
 
 export default function CommentsModal({ postId, onClose, onCommentAdded }) {
