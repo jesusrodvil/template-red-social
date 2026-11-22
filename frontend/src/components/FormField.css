@@ -20,6 +20,10 @@
   resize: vertical;
 }
 
+.field__input::placeholder {
+  color: var(--text-muted);
+}
+
 .field__input:focus {
   border-color: var(--color-primary);
   outline: 2px solid var(--primary-soft);

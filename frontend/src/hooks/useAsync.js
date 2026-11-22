@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export function useAsync(loader) {
   const [state, setState] = useState({ data: null, loading: true, error: null })
+  const [version, setVersion] = useState(0)
 
   useEffect(() => {
     let cancelled = false
@@ -14,7 +15,9 @@ export function useAsync(loader) {
     return () => {
       cancelled = true
     }
-  }, [loader])
+  }, [loader, version])
 
-  return state
+  const reload = useCallback(() => setVersion((current) => current + 1), [])
+
+  return { ...state, reload }
 }

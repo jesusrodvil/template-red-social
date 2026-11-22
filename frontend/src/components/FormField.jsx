@@ -23,8 +23,9 @@ export default function FormField({ field, value, error, onChange }) {
         <textarea
           {...common}
           className="field__input"
-          rows={4}
+          rows={field.rows ?? 4}
           maxLength={field.maxLength}
+          placeholder={field.placeholder}
           value={value}
           onChange={(event) => onChange(event.target.value)}
         />
@@ -36,6 +37,7 @@ export default function FormField({ field, value, error, onChange }) {
           className="field__input"
           type="text"
           maxLength={field.maxLength}
+          placeholder={field.placeholder}
           value={value}
           onChange={(event) => onChange(event.target.value)}
         />
