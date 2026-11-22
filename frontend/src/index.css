@@ -81,3 +81,22 @@ body {
 .button--icon {
   padding: 0.5rem;
 }
+
+.button--danger {
+  color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+.button--danger:hover {
+  background: var(--secondary-soft);
+}
+
+.button--danger-solid {
+  color: #ffffff;
+  background: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+.button--danger-solid:hover {
+  background: color-mix(in srgb, var(--color-secondary) 85%, black);
+}

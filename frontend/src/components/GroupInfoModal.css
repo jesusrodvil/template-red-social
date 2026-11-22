@@ -18,12 +18,3 @@
   padding-top: 1.25rem;
   border-top: 1px solid var(--border);
 }
-
-.group-info__confirm p {
-  margin: 0 0 0.75rem;
-}
-
-.group-info__confirm-actions {
-  display: flex;
-  gap: 0.5rem;
-}

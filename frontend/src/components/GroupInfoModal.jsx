@@ -4,6 +4,7 @@ import { useApp } from '../context/app-context'
 import { useAsync } from '../hooks/useAsync'
 import { ApiError, getGroupInfo, leaveGroup } from '../services/api'
 import { pathTo } from '../utils/routes'
+import ConfirmButton from './ConfirmButton'
 import Form from './Form'
 import ListItem from './ListItem'
 import Modal from './Modal'
@@ -23,7 +24,6 @@ export default function GroupInfoModal({ onClose }) {
   const navigate = useNavigate()
   const loader = useCallback(() => getGroupInfo({ user, groupId }), [user, groupId])
   const { data: group, loading, error } = useAsync(loader)
-  const [confirmingLeave, setConfirmingLeave] = useState(false)
   const [leaveError, setLeaveError] = useState(null)
 
   const handleLeave = async () => {
@@ -56,24 +56,12 @@ export default function GroupInfoModal({ onClose }) {
           )}
 
           <section className="group-info__section">
-            {!confirmingLeave && (
-              <button type="button" className="button" onClick={() => setConfirmingLeave(true)}>
-                Salir del grupo
-              </button>
-            )}
-            {confirmingLeave && (
-              <div className="group-info__confirm">
-                <p>{leaveMessage(group)}</p>
-                <div className="group-info__confirm-actions">
-                  <button type="button" className="button" onClick={() => setConfirmingLeave(false)}>
-                    Cancelar
-                  </button>
-                  <button type="button" className="button button--primary" onClick={handleLeave}>
-                    Salir
-                  </button>
-                </div>
-              </div>
-            )}
+            <ConfirmButton
+              label="Salir del grupo"
+              message={leaveMessage(group)}
+              confirmLabel="Salir"
+              onConfirm={handleLeave}
+            />
             {leaveError && <p className="form__message form__message--error">{leaveError}</p>}
           </section>
         </>
