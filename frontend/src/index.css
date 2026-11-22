@@ -39,3 +39,36 @@ body {
 .muted {
   color: var(--text-muted);
 }
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--primary-soft);
+}
+
+.button--primary {
+  color: #ffffff;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.button--primary:hover {
+  background: color-mix(in srgb, var(--color-primary) 85%, black);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
