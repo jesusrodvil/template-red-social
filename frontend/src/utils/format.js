@@ -12,5 +12,5 @@ export function formatDate(isoDate) {
 
 export function formatUsername(user) {
   if (!user?.code) return null
-  return `@${user.id}#${user.code}`
+  return `@${user.handle}#${user.code}`
 }

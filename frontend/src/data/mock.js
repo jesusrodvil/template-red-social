@@ -1,8 +1,8 @@
 export const users = [
   { id: 'admin', name: 'Administrador', role: 'admin', avatar: null },
-  { id: 'lucia', code: '123', name: 'Lucía', role: 'user', avatar: null },
-  { id: 'pablo', code: '042', name: 'Pablo', role: 'user', avatar: null },
-  { id: 'marta', code: '777', name: 'Marta', role: 'user', avatar: null },
+  { id: 'lucia', handle: 'lucia', code: '123', name: 'Lucía', role: 'user', avatar: null },
+  { id: 'pablo', handle: 'pablo', code: '042', name: 'Pablo', role: 'user', avatar: null },
+  { id: 'marta', handle: 'marta', code: '777', name: 'Marta', role: 'user', avatar: null },
 ]
 
 export const groups = [

@@ -63,6 +63,38 @@ export const pages = [
     path: '/cuenta',
     title: 'Cuenta',
     type: 'settings',
+    sections: [
+      {
+        id: 'perfil',
+        title: 'Perfil',
+        description: 'Cómo te ven los demás.',
+        form: 'profile',
+      },
+      {
+        id: 'contrasena',
+        title: 'Actualizar contraseña',
+        form: 'password',
+      },
+      {
+        id: 'borrar',
+        title: 'Borrar cuenta',
+        description: 'Se borrarán tu perfil y tu pertenencia a los grupos. No se puede deshacer.',
+        danger: true,
+        roles: ['user'],
+        confirmAction: {
+          label: 'Borrar mi cuenta',
+          message: '¿Seguro que quieres borrar tu cuenta?',
+          confirmLabel: 'Borrar',
+          action: 'deleteAccount',
+        },
+      },
+      {
+        id: 'borrar-admin',
+        title: 'Borrar cuenta',
+        description: 'La cuenta de administrador no se puede borrar.',
+        roles: ['admin'],
+      },
+    ],
     showInMenu: false,
     visible: true,
     roles: ['admin', 'user'],
@@ -72,6 +104,14 @@ export const pages = [
     path: '/ajustes',
     title: 'Ajustes',
     type: 'settings',
+    sections: [
+      {
+        id: 'apariencia',
+        title: 'Apariencia',
+        description: 'Los cambios se aplican al momento.',
+        component: 'appearance',
+      },
+    ],
     showInMenu: false,
     visible: true,
     roles: ['admin', 'user'],

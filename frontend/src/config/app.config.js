@@ -8,6 +8,9 @@ const appConfig = {
     commentText: 280,
     groupName: 50,
     groupDescription: 280,
+    userName: 50,
+    userHandle: 30,
+    passwordMin: 8,
   },
 }
 
