@@ -56,7 +56,7 @@ function LoadedForm(props) {
 
 function FormBody({ form, loaded, context, onSuccess, onCancel, resetOnSuccess = false }) {
   const { user } = useApp()
-  const fields = form.fields.filter((field) => !field.roles || field.roles.includes(user.role))
+  const fields = form.fields.filter((field) => !field.roles || field.roles.includes(user?.role))
   const [values, setValues] = useState(() => initialValues(fields, loaded))
   const [errors, setErrors] = useState({})
   const [sending, setSending] = useState(false)

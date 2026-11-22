@@ -1,0 +1,50 @@
+.login {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.login__card {
+  width: min(400px, 100%);
+  padding: 2rem 1.75rem 1.5rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.login__logo {
+  width: 64px;
+  height: 64px;
+}
+
+.login__title {
+  margin: 0.75rem 0 1.5rem;
+  font-size: 1.5rem;
+  color: var(--text-strong);
+}
+
+.login__card .form {
+  text-align: left;
+}
+
+.login__card .form__actions .button {
+  justify-content: center;
+  width: 100%;
+}
+
+.login__switch {
+  margin-top: 1rem;
+  padding: 0.25rem;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.login__switch:hover {
+  text-decoration: underline;
+}

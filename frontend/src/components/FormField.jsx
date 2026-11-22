@@ -28,14 +28,18 @@ export default function FormField({ field, value, error, onChange }) {
             </p>
           )}
         </div>
+        {['text', 'email', 'password'].includes(field.type) && (
         <input
           {...common}
-          className="field__switch"
-          type="checkbox"
-          role="switch"
-          checked={value}
-          onChange={(event) => onChange(event.target.checked)}
+          className="field__input"
+          type={field.type}
+          autoComplete={field.autoComplete}
+          maxLength={field.maxLength}
+          placeholder={field.placeholder}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
         />
+      )}
       </div>
     )
   }

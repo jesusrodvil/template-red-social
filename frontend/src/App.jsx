@@ -1,7 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import Layout from './components/Layout'
 import { pages } from './config/pages.config'
+import { useApp } from './context/app-context'
 import AppProvider from './context/AppProvider'
+import LoginPage from './pages/LoginPage'
 import PageRenderer from './pages/PageRenderer'
 import PlaceholderPage from './pages/PlaceholderPage'
 
@@ -25,10 +27,15 @@ const router = createBrowserRouter([
   },
 ])
 
+function SessionGate() {
+  const { user } = useApp()
+  return user ? <RouterProvider router={router} /> : <LoginPage />
+}
+
 export default function App() {
   return (
     <AppProvider>
-      <RouterProvider router={router} />
+      <SessionGate />
     </AppProvider>
   )
 }

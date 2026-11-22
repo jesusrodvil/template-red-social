@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import themeConfig from '../config/theme.config'
 import { useAsync } from '../hooks/useAsync'
 import { useColorScheme } from '../hooks/useColorScheme'
-import { getCurrentUser } from '../services/api'
+import { getCurrentUser, logout as endSession } from '../services/api'
 import { AppContext } from './app-context'
 
 const THEME_KEY = 'themeMode'
@@ -38,10 +38,13 @@ export default function AppProvider({ children }) {
     }
   }, [themeMode])
 
-  const logout = () => console.info('logout: pendiente de implementar')
+  const logout = async () => {
+    await endSession()
+    refreshUser()
+  }
 
   if (loading) return null
-  if (error || !user) return <p className="muted">No se ha podido cargar el usuario.</p>
+  if (error) return <p className="muted">No se ha podido cargar la sesión.</p>
 
   return (
     <AppContext.Provider
