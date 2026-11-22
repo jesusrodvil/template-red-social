@@ -1,0 +1,28 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.settings__section {
+  padding: 1.1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.settings__section--danger {
+  border-color: var(--color-secondary);
+}
+
+.settings__title {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  color: var(--text-strong);
+}
+
+.settings__description {
+  margin: -0.55rem 0 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}

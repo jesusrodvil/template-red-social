@@ -86,6 +86,7 @@ export const pages = [
           message: '¿Seguro que quieres borrar tu cuenta?',
           confirmLabel: 'Borrar',
           action: 'deleteAccount',
+          logoutAfter: true,
         },
       },
       {

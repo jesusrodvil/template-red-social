@@ -4,10 +4,12 @@ import FeedPage from './FeedPage'
 import ListPage from './ListPage'
 import PageSubtitle from './PageSubtitle'
 import PlaceholderPage from './PlaceholderPage'
+import SettingsPage from './SettingsPage'
 
 const pageTypes = {
   feed: FeedPage,
   list: ListPage,
+  settings: SettingsPage,
 }
 
 export default function PageRenderer({ page }) {
