@@ -3,9 +3,24 @@ export const pages = [
     id: 'inicio',
     path: '/',
     title: 'Inicio',
-    icon: 'Home', 
+    icon: 'Home',
     type: 'feed',
     source: 'groupsFeed',
+    showInMenu: true,
+    visible: true,
+    roles: ['admin', 'user'],
+  },
+  {
+    id: 'grupos',
+    path: '/grupos',
+    title: 'Grupos',
+    icon: 'Users',
+    type: 'list',
+    source: 'myGroups',
+    emptyMessage: 'Todavía no perteneces a ningún grupo.',
+    actions: [
+      { id: 'crear-grupo', label: 'Crear grupo', icon: 'Plus', form: 'createGroup' },
+    ],
     showInMenu: true,
     visible: true,
     roles: ['admin', 'user'],
@@ -26,17 +41,6 @@ export const pages = [
         modal: 'groupInfo',
       },
     ],
-    showInMenu: true,
-    visible: true,
-    roles: ['admin', 'user'],
-  },
-  {
-    id: 'grupo',
-    path: '/grupos/:groupId',
-    title: 'Grupos',
-    type: 'feed',
-    source: 'groupFeed',
-    subtitleSource: 'groupName',
     showInMenu: false,
     visible: true,
     roles: ['admin', 'user'],
@@ -73,6 +77,7 @@ export const pages = [
     roles: ['admin', 'user'],
   },
 ]
+
 
 export const menuConfig = {
   userSectionLink: '/cuenta',
