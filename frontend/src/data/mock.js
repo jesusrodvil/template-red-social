@@ -2,6 +2,7 @@ export const users = [
   { id: 'admin', name: 'Administrador', role: 'admin', avatar: null },
   { id: 'lucia', code: '123', name: 'Lucía', role: 'user', avatar: null },
   { id: 'pablo', code: '042', name: 'Pablo', role: 'user', avatar: null },
+  { id: 'marta', code: '777', name: 'Marta', role: 'user', avatar: null },
 ]
 
 export const groups = [
@@ -10,6 +11,7 @@ export const groups = [
     name: 'Amigos del cole',
     description: 'Cenas, quedadas y fotos de toda la vida.',
     image: null,
+    ownerId: 'admin',
     members: ['admin', 'lucia', 'pablo'],
   },
   {
@@ -17,6 +19,7 @@ export const groups = [
     name: 'Equipo de pádel',
     description: 'Partidos de los jueves y la liga del barrio.',
     image: '/mock/foto-1.svg',
+    ownerId: 'pablo',
     members: ['admin', 'pablo'],
   },
   {
@@ -24,6 +27,7 @@ export const groups = [
     name: 'Viaje a Lisboa',
     description: 'Organización del viaje de primavera.',
     image: null,
+    ownerId: 'lucia',
     members: ['lucia', 'pablo'],
   },
 ]
@@ -54,7 +58,7 @@ export const posts = [
     groupId: 'g3',
     authorId: 'lucia',
     createdAt: '2026-11-16T12:00:00',
-    text: 'Este post no debería verse: el administrador no está en este grupo.',
+    text: '¿Quién mira vuelos para abril?',
     image: null,
     likes: 0,
     likedByMe: false,
@@ -69,7 +73,19 @@ export const comments = [
 
 export const notifications = [
   {
+    id: 'n4',
+    type: 'invitation',
+    recipientId: 'admin',
+    sender: { type: 'group', id: 'g3' },
+    text: 'Lucía te ha invitado a unirte al grupo.',
+    createdAt: '2026-11-17T09:30:00',
+    read: false,
+    status: 'pending',
+    target: { groupId: 'g3' },
+  },
+  {
     id: 'n1',
+    type: 'post',
     recipientId: 'admin',
     sender: { type: 'user', id: 'pablo' },
     text: 'Ha publicado en Equipo de pádel.',
@@ -79,6 +95,7 @@ export const notifications = [
   },
   {
     id: 'n2',
+    type: 'member',
     recipientId: 'admin',
     sender: { type: 'group', id: 'g2' },
     text: 'Te han añadido al grupo.',
@@ -88,6 +105,7 @@ export const notifications = [
   },
   {
     id: 'n3',
+    type: 'post',
     recipientId: 'admin',
     sender: { type: 'user', id: 'lucia' },
     text: 'Ha publicado en Amigos del cole.',
