@@ -1,8 +1,26 @@
-import rolesConfig from '../config/roles.config'
 import * as db from '../data/mock'
 import { formatUsername } from '../utils/format'
 
 export class ApiError extends Error {}
+
+const SESSION_KEY = 'sessionUserId'
+
+function readSession() {
+  try {
+    return localStorage.getItem(SESSION_KEY)
+  } catch {
+    return null
+  }
+}
+
+function writeSession(userId) {
+  try {
+    if (userId) localStorage.setItem(SESSION_KEY, userId)
+    else localStorage.removeItem(SESSION_KEY)
+  } catch {
+    // Sin acceso al almacenamiento: la sesión solo dura hasta recargar.
+  }
+}
 
 const findUser = (id) => db.users.find((user) => user.id === id)
 const findGroup = (id) => db.groups.find((group) => group.id === id)
@@ -81,8 +99,26 @@ function freeCode(handle, userId) {
 }
 
 export async function getCurrentUser() {
-  const user = db.users.find((candidate) => candidate.role === rolesConfig.defaultRole)
-  return user && { ...user }
+  const user = findUser(readSession())
+  return user ? { ...user } : null
+}
+
+export async function login(values) {
+  const email = values.email.trim().toLowerCase()
+  const user = db.users.find((candidate) => candidate.email === email)
+  if (!user || values.password !== db.DEMO_PASSWORD) {
+    throw new ApiError('El correo o la contraseña no son correctos.')
+  }
+  writeSession(user.id)
+}
+
+export async function logout() {
+  writeSession(null)
+}
+
+export async function forgotPassword() {
+  console.info('forgotPassword: pendiente de implementar en el backend')
+  return 'Si el correo está registrado, te llegará un enlace para crear una contraseña nueva.'
 }
 
 export async function getGroupsFeed({ user }) {
@@ -349,6 +385,8 @@ export const itemActions = {
 }
 
 export const formActions = {
+  login,
+  forgotPassword,
   createGroup,
   addComment,
   inviteMember,
