@@ -3,6 +3,7 @@ const appConfig = {
   logo: '/favicon.svg',
   locale: 'es-ES',
   sidebarPosition: 'right',
+  mockLatency: 400,
   limits: {
     postText: 280,
     commentText: 280,

@@ -1,7 +1,9 @@
+import appConfig from '../config/app.config'
 import * as db from '../data/mock'
 import { formatUsername } from '../utils/format'
 
 export class ApiError extends Error {}
+const latency = () => new Promise((resolve) => setTimeout(resolve, appConfig.mockLatency))
 
 const SESSION_KEY = 'sessionUserId'
 
@@ -99,11 +101,13 @@ function freeCode(handle, userId) {
 }
 
 export async function getCurrentUser() {
+  await latency()
   const user = findUser(readSession())
   return user ? { ...user } : null
 }
 
 export async function login(values) {
+  await latency()
   const email = values.email.trim().toLowerCase()
   const user = db.users.find((candidate) => candidate.email === email)
   if (!user || values.password !== db.DEMO_PASSWORD) {
@@ -113,15 +117,18 @@ export async function login(values) {
 }
 
 export async function logout() {
+  await latency()
   writeSession(null)
 }
 
 export async function forgotPassword() {
+  await latency()
   console.info('forgotPassword: pendiente de implementar en el backend')
   return 'Si el correo está registrado, te llegará un enlace para crear una contraseña nueva.'
 }
 
 export async function getGroupsFeed({ user }) {
+  await latency()
   const myGroupIds = db.groups
     .filter((group) => group.members.includes(user.id))
     .map((group) => group.id)
@@ -133,6 +140,7 @@ export async function getGroupsFeed({ user }) {
 }
 
 export async function getGroupFeed({ user, params }) {
+  await latency()
   const group = getMemberGroup(params.groupId, user)
 
   return db.posts
@@ -142,6 +150,7 @@ export async function getGroupFeed({ user, params }) {
 }
 
 export async function getComments(postId) {
+  await latency()
   return db.comments
     .filter((comment) => comment.postId === postId)
     .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
@@ -149,6 +158,7 @@ export async function getComments(postId) {
 }
 
 export async function addComment(values, { user, postId }) {
+  await latency()
   const post = db.posts.find((candidate) => candidate.id === postId)
   if (!post) throw new ApiError('La publicación ya no existe.')
   getMemberGroup(post.groupId, user)
@@ -163,10 +173,12 @@ export async function addComment(values, { user, postId }) {
 }
 
 export async function getGroupName({ user, params }) {
+  await latency()
   return getMemberGroup(params.groupId, user).name
 }
 
 export async function getGroupInfo({ user, groupId }) {
+  await latency()
   const group = getMemberGroup(groupId, user)
   const members = group.members
     .map(findUser)
@@ -192,11 +204,13 @@ export async function getGroupInfo({ user, groupId }) {
 }
 
 export async function leaveGroup({ user, groupId }) {
+  await latency()
   const group = getMemberGroup(groupId, user)
   removeMember(group, user.id)
 }
 
 export async function inviteMember(values, { user, groupId }) {
+  await latency()
   const group = getMemberGroup(groupId, user)
   if (group.ownerId !== user.id) {
     throw new ApiError('Solo el dueño del grupo puede invitar.')
@@ -238,6 +252,7 @@ export async function inviteMember(values, { user, groupId }) {
 }
 
 export async function getMyGroups({ user }) {
+  await latency()
   return db.groups
     .filter((group) => group.members.includes(user.id))
     .map((group) => ({
@@ -251,6 +266,7 @@ export async function getMyGroups({ user }) {
 }
 
 export async function getNotifications({ user }) {
+  await latency()
   return db.notifications
     .filter((notification) => notification.recipientId === user.id)
     .sort(byNewest)
@@ -284,11 +300,13 @@ export async function getNotifications({ user }) {
 }
 
 export async function markNotificationRead({ item }) {
+  await latency()
   const notification = db.notifications.find((n) => n.id === item.id)
   if (notification) notification.read = true
 }
 
 export async function acceptInvitation({ user, item }) {
+  await latency()
   const invitation = findPendingInvitation(item.id, user)
   const group = findGroup(invitation.target.groupId)
   if (!group) throw new ApiError('El grupo ya no existe.')
@@ -300,6 +318,7 @@ export async function acceptInvitation({ user, item }) {
 }
 
 export async function declineInvitation({ user, item }) {
+  await latency()
   const invitation = findPendingInvitation(item.id, user)
   invitation.status = 'declined'
   invitation.read = true
@@ -307,6 +326,7 @@ export async function declineInvitation({ user, item }) {
 }
 
 export async function getProfileValues({ user }) {
+  await latency()
   const stored = findUser(user.id)
   return {
     image: stored.avatar ? { url: stored.avatar } : null,
@@ -316,6 +336,7 @@ export async function getProfileValues({ user }) {
 }
 
 export async function updateProfile(values, { user }) {
+  await latency()
   const stored = findUser(user.id)
   if (!stored) throw new ApiError('Tu cuenta ya no existe.')
 
@@ -339,12 +360,14 @@ export async function updateProfile(values, { user }) {
 }
 
 export async function updatePassword(values, { user }) {
+  await latency()
   if (!findUser(user.id)) throw new ApiError('Tu cuenta ya no existe.')
   console.info('updatePassword: pendiente de implementar en el backend')
   return 'Contraseña actualizada.'
 }
 
 export async function deleteAccount({ user }) {
+  await latency()
   const stored = findUser(user.id)
   if (!stored) throw new ApiError('Tu cuenta ya no existe.')
   if (stored.role === 'admin') {
@@ -358,6 +381,7 @@ export async function deleteAccount({ user }) {
 }
 
 export async function createGroup(values, { user }) {
+  await latency()
   console.info('createGroup: pendiente de implementar en el backend', {
     ...values,
     ownerId: user.id,
