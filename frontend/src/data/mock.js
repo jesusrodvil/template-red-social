@@ -1,8 +1,34 @@
+export const DEMO_PASSWORD = 'demo1234'
+
 export const users = [
-  { id: 'admin', name: 'Administrador', role: 'admin', avatar: null },
-  { id: 'lucia', handle: 'lucia', code: '123', name: 'Lucía', role: 'user', avatar: null },
-  { id: 'pablo', handle: 'pablo', code: '042', name: 'Pablo', role: 'user', avatar: null },
-  { id: 'marta', handle: 'marta', code: '777', name: 'Marta', role: 'user', avatar: null },
+  { id: 'admin', email: 'admin@example.com', name: 'Administrador', role: 'admin', avatar: null },
+  {
+    id: 'lucia',
+    email: 'lucia@example.com',
+    handle: 'lucia',
+    code: '123',
+    name: 'Lucía',
+    role: 'user',
+    avatar: null,
+  },
+  {
+    id: 'pablo',
+    email: 'pablo@example.com',
+    handle: 'pablo',
+    code: '042',
+    name: 'Pablo',
+    role: 'user',
+    avatar: null,
+  },
+  {
+    id: 'marta',
+    email: 'marta@example.com',
+    handle: 'marta',
+    code: '777',
+    name: 'Marta',
+    role: 'user',
+    avatar: null,
+  },
 ]
 
 export const groups = [

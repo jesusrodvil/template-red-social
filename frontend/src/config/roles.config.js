@@ -3,7 +3,7 @@ const rolesConfig = {
     admin: { label: 'Administrador', unique: true },
     user: { label: 'Usuario', unique: false },
   },
-  defaultRole: 'admin',
+  defaultRole: 'user',
 }
 
 export default rolesConfig
