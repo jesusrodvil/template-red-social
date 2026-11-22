@@ -5,8 +5,9 @@ import Avatar from './Avatar'
 import Icon from './Icon'
 import './ListItem.css'
 
-export default function ListItem({ item, onSeen }) {
+export default function ListItem({ item, onSeen, onAction }) {
   const markSeen = () => item.unread && onSeen?.(item)
+  const isLink = item.link && !item.actions
 
   const content = (
     <>
@@ -18,13 +19,27 @@ export default function ListItem({ item, onSeen }) {
       <div className="list-item__text">
         <p className="list-item__title">{item.title}</p>
         {item.subtitle && <p className="list-item__subtitle">{item.subtitle}</p>}
+        {item.actions && (
+          <div className="list-item__actions">
+            {item.actions.map((action) => (
+              <button
+                key={action.id}
+                type="button"
+                className={action.primary ? 'button button--primary button--small' : 'button button--small'}
+                onClick={() => onAction?.(item, action)}
+              >
+                {action.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       {item.date && (
         <time className="list-item__date" dateTime={item.date}>
           {formatDate(item.date)}
         </time>
       )}
-      {item.link && !item.date && (
+      {isLink && !item.date && (
         <Icon name="ChevronRight" className="list-item__chevron" />
       )}
       {item.unread && (
@@ -35,7 +50,7 @@ export default function ListItem({ item, onSeen }) {
 
   return (
     <li className="list-item">
-      {item.link ? (
+      {isLink ? (
         <Link
           to={pathTo(item.link)}
           className="list-item__row"
@@ -45,7 +60,7 @@ export default function ListItem({ item, onSeen }) {
           {content}
         </Link>
       ) : (
-        <div className="list-item__row" onMouseEnter={markSeen}>
+        <div className="list-item__row" onMouseEnter={markSeen} onFocus={markSeen}>
           {content}
         </div>
       )}

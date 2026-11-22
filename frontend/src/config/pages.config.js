@@ -26,7 +26,7 @@ export const pages = [
         modal: 'groupInfo',
       },
     ],
-    showInMenu: false,
+    showInMenu: true,
     visible: true,
     roles: ['admin', 'user'],
   },

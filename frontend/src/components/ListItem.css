@@ -50,3 +50,9 @@ a.list-item__row:hover {
   border-radius: 50%;
   background: var(--color-primary);
 }
+
+.list-item__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}

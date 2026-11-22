@@ -1,0 +1,29 @@
+.group-info__heading {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--text-strong);
+}
+
+.group-info__members {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.group-info__section {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.group-info__confirm p {
+  margin: 0 0 0.75rem;
+}
+
+.group-info__confirm-actions {
+  display: flex;
+  gap: 0.5rem;
+}
