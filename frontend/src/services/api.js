@@ -9,10 +9,11 @@ const findGroup = (id) => db.groups.find((group) => group.id === id)
 const byNewest = (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
 const newId = (prefix) => `${prefix}${Date.now()}`
 const deletedSender = { name: 'Eliminado', image: null, avatar: null }
+const findAuthor = (id) => findUser(id) ?? { id, name: 'Usuario eliminado', avatar: null }
 
 const withDetails = (post) => ({
   ...post,
-  author: findUser(post.authorId),
+  author: findAuthor(post.authorId),
   commentCount: db.comments.filter((c) => c.postId === post.id).length,
 })
 
@@ -47,8 +48,41 @@ function findPendingInvitation(notificationId, user) {
   return notification
 }
 
+function removeMember(group, userId) {
+  if (group.ownerId === userId) {
+    const nextOwner = pickNextOwner(group, userId)
+    if (!nextOwner) {
+      db.groups.splice(db.groups.indexOf(group), 1)
+      return
+    }
+    group.ownerId = nextOwner.id
+  }
+  group.members = group.members.filter((id) => id !== userId)
+}
+
+function readAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = () => reject(reader.error)
+    reader.readAsDataURL(file)
+  })
+}
+
+function freeCode(handle, userId) {
+  const taken = new Set(
+    db.users.filter((u) => u.id !== userId && u.handle === handle).map((u) => u.code),
+  )
+  const free = Array.from({ length: 1000 }, (_, n) => String(n).padStart(3, '0')).filter(
+    (code) => !taken.has(code),
+  )
+  if (free.length === 0) throw new ApiError('Ese usuario no está disponible. Prueba con otro.')
+  return free[Math.floor(Math.random() * free.length)]
+}
+
 export async function getCurrentUser() {
-  return db.users.find((user) => user.role === rolesConfig.defaultRole)
+  const user = db.users.find((candidate) => candidate.role === rolesConfig.defaultRole)
+  return user && { ...user }
 }
 
 export async function getGroupsFeed({ user }) {
@@ -75,7 +109,7 @@ export async function getComments(postId) {
   return db.comments
     .filter((comment) => comment.postId === postId)
     .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-    .map((comment) => ({ ...comment, author: findUser(comment.authorId) }))
+    .map((comment) => ({ ...comment, author: findAuthor(comment.authorId) }))
 }
 
 export async function addComment(values, { user, postId }) {
@@ -123,17 +157,7 @@ export async function getGroupInfo({ user, groupId }) {
 
 export async function leaveGroup({ user, groupId }) {
   const group = getMemberGroup(groupId, user)
-
-  if (group.ownerId === user.id) {
-    const nextOwner = pickNextOwner(group, user.id)
-    if (!nextOwner) {
-      db.groups.splice(db.groups.indexOf(group), 1)
-      return
-    }
-    group.ownerId = nextOwner.id
-  }
-
-  group.members = group.members.filter((id) => id !== user.id)
+  removeMember(group, user.id)
 }
 
 export async function inviteMember(values, { user, groupId }) {
@@ -142,8 +166,10 @@ export async function inviteMember(values, { user, groupId }) {
     throw new ApiError('Solo el dueño del grupo puede invitar.')
   }
 
-  const [, id, code] = values.username.trim().match(/^@([\w-]+)#(\d{3})$/) ?? []
-  const invited = db.users.find((candidate) => candidate.id === id && candidate.code === code)
+  const [, handle, code] = values.username.trim().match(/^@([\w-]+)#(\d{3})$/) ?? []
+  const invited = db.users.find(
+    (candidate) => candidate.handle === handle && candidate.code === code,
+  )
   if (!invited) throw new ApiError('No existe ningún usuario con ese nombre.')
   if (group.members.includes(invited.id)) {
     throw new ApiError(`${invited.name} ya está en el grupo.`)
@@ -244,6 +270,57 @@ export async function declineInvitation({ user, item }) {
   invitation.text = 'Has rechazado la invitación.'
 }
 
+export async function getProfileValues({ user }) {
+  const stored = findUser(user.id)
+  return {
+    image: stored.avatar ? { url: stored.avatar } : null,
+    name: stored.name,
+    handle: stored.handle ?? '',
+  }
+}
+
+export async function updateProfile(values, { user }) {
+  const stored = findUser(user.id)
+  if (!stored) throw new ApiError('Tu cuenta ya no existe.')
+
+  const isAdmin = stored.role === 'admin'
+  const handle = isAdmin ? stored.handle : values.handle.trim()
+  const taken =
+    !isAdmin &&
+    db.users.some((u) => u.id !== stored.id && u.handle === handle && u.code === stored.code)
+  const code = taken ? freeCode(handle, stored.id) : stored.code
+  const avatar = values.image?.file
+    ? await readAsDataUrl(values.image.file)
+    : (values.image?.url ?? null)
+
+  stored.avatar = avatar
+  if (isAdmin) return 'Perfil actualizado.'
+
+  stored.name = values.name.trim()
+  stored.handle = handle
+  stored.code = code
+  return `Perfil actualizado. Tu usuario es @${handle}#${code}.`
+}
+
+export async function updatePassword(values, { user }) {
+  if (!findUser(user.id)) throw new ApiError('Tu cuenta ya no existe.')
+  console.info('updatePassword: pendiente de implementar en el backend')
+  return 'Contraseña actualizada.'
+}
+
+export async function deleteAccount({ user }) {
+  const stored = findUser(user.id)
+  if (!stored) throw new ApiError('Tu cuenta ya no existe.')
+  if (stored.role === 'admin') {
+    throw new ApiError('La cuenta de administrador no se puede borrar.')
+  }
+
+  db.groups
+    .filter((group) => group.members.includes(stored.id))
+    .forEach((group) => removeMember(group, stored.id))
+  db.users.splice(db.users.indexOf(stored), 1)
+}
+
 export async function createGroup(values, { user }) {
   console.info('createGroup: pendiente de implementar en el backend', {
     ...values,
@@ -275,4 +352,14 @@ export const formActions = {
   createGroup,
   addComment,
   inviteMember,
+  updateProfile,
+  updatePassword,
+}
+
+export const formLoaders = {
+  profile: getProfileValues,
+}
+
+export const confirmActions = {
+  deleteAccount,
 }
