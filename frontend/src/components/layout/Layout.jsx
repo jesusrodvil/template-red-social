@@ -3,6 +3,7 @@ import { Link, Outlet, useMatches } from 'react-router'
 import appConfig from '../../config/app.config'
 import Sidebar from './Sidebar'
 import './Layout.css'
+import BottomNav from './BottomNav'
 
 export default function Layout() {
   const matches = useMatches()
@@ -30,6 +31,7 @@ export default function Layout() {
         </main>
       </div>
       <Sidebar />
+      <BottomNav />
     </div>
   )
 }
