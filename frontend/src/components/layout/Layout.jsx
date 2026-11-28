@@ -4,6 +4,7 @@ import appConfig from '../../config/app.config'
 import Sidebar from './Sidebar'
 import './Layout.css'
 import BottomNav from './BottomNav'
+import MobileMenu from './MobileMenu'
 
 export default function Layout() {
   const matches = useMatches()
@@ -25,6 +26,7 @@ export default function Layout() {
             <h1 className="layout__title">{title}</h1>
             {subtitle && <p className="layout__subtitle">{subtitle}</p>}
           </div>
+          <MobileMenu />
         </header>
         <main className="layout__content">
           <Outlet context={{ setSubtitle }} />
