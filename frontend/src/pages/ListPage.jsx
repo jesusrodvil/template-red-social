@@ -43,7 +43,7 @@ export default function ListPage({ page }) {
 
   return (
     <>
-      <PageActions page={page} />
+      <PageActions page={page} onDone={reload} />
 
       {loading && <Loading />}
       {error && <p className="muted">No se ha podido cargar la lista.</p>}

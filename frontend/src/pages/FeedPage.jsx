@@ -30,7 +30,7 @@ export default function FeedPage({ page }) {
 
   return (
     <>
-      <PageActions page={page} />
+      <PageActions page={page} onDone={reload} />
       {posts.length === 0 && <p className="muted">Todavía no hay publicaciones.</p>}
       {posts.map((post) => (
         <PostCard

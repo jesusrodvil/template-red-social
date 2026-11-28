@@ -6,6 +6,9 @@ export const pages = [
     icon: 'Home',
     type: 'feed',
     source: 'groupsFeed',
+    actions: [
+      { id: 'publicar', label: 'Publicar', icon: 'Plus', form: 'createPost' },
+    ],
     showInMenu: true,
     visible: true,
     roles: ['admin', 'user'],

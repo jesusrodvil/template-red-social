@@ -4,7 +4,7 @@ import Icon from '../ui/Icon'
 import { modals } from '../registries/modals'
 import './PageActions.css'
 
-export default function PageActions({ page }) {
+export default function PageActions({ page, onDone }) {
   const [openAction, setOpenAction] = useState(null)
   const close = () => setOpenAction(null)
 
@@ -30,7 +30,9 @@ export default function PageActions({ page }) {
         ))}
       </div>
 
-      {openAction?.form && <FormModal formId={openAction.form} onClose={close} />}
+      {openAction?.form && (
+        <FormModal formId={openAction.form} onClose={close} onSuccess={onDone} />
+      )}
       {OpenModal && <OpenModal page={page} onClose={close} />}
     </>
   )

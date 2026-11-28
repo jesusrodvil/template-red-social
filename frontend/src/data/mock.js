@@ -61,7 +61,7 @@ export const groups = [
 export const posts = [
   {
     id: 'p1',
-    groupId: 'g1',
+    groupIds: ['g1'],
     authorId: 'lucia',
     createdAt: '2026-11-15T19:20:00',
     text: '¿Quedamos el sábado para cenar?',
@@ -71,7 +71,7 @@ export const posts = [
   },
   {
     id: 'p2',
-    groupId: 'g2',
+    groupIds: ['g2'],
     authorId: 'pablo',
     createdAt: '2026-11-16T10:05:00',
     text: 'Foto del partido de ayer. ¡Revancha la semana que viene!',
@@ -81,7 +81,7 @@ export const posts = [
   },
   {
     id: 'p3',
-    groupId: 'g3',
+    groupIds: ['g3'],
     authorId: 'lucia',
     createdAt: '2026-11-16T12:00:00',
     text: '¿Quién mira vuelos para abril?',

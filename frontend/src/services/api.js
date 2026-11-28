@@ -134,7 +134,7 @@ export async function getGroupsFeed({ user }) {
     .map((group) => group.id)
 
   return db.posts
-    .filter((post) => myGroupIds.includes(post.groupId))
+    .filter((post) => post.groupIds.some((id) => myGroupIds.includes(id)))
     .sort(byNewest)
     .map(withDetails)
 }
@@ -144,7 +144,7 @@ export async function getGroupFeed({ user, params }) {
   const group = getMemberGroup(params.groupId, user)
 
   return db.posts
-    .filter((post) => post.groupId === group.id)
+    .filter((post) => post.groupIds.includes(group.id))
     .sort(byNewest)
     .map(withDetails)
 }
@@ -159,8 +159,8 @@ export async function getComments(postId) {
 
 export async function addComment(values, { user, postId }) {
   await latency()
-  const post = db.posts.find((candidate) => candidate.id === postId)
-  if (!post) throw new ApiError('La publicación ya no existe.')
+  const canSee = post.groupIds.some((id) => findGroup(id)?.members.includes(user.id))
+  if (!canSee) throw new ApiError('Ya no perteneces a ningún grupo de esta publicación.')
   getMemberGroup(post.groupId, user)
 
   db.comments.push({
@@ -170,6 +170,32 @@ export async function addComment(values, { user, postId }) {
     createdAt: new Date().toISOString(),
     text: values.text.trim(),
   })
+}
+
+export async function createPost(values, { user }) {
+  await latency()
+  const groupIds = db.groups
+    .filter((group) => group.members.includes(user.id))
+    .map((group) => group.id)
+
+  if (groupIds.length === 0) {
+    throw new ApiError('Únete a un grupo para poder publicar.')
+  }
+
+  const image = values.image?.file ? await readAsDataUrl(values.image.file) : null
+
+  db.posts.push({
+    id: newId('p'),
+    groupIds,
+    authorId: user.id,
+    createdAt: new Date().toISOString(),
+    text: values.text.trim(),
+    image,
+    likes: 0,
+    likedByMe: false,
+  })
+
+  return 'Publicado en todos tus grupos.'
 }
 
 export async function getGroupName({ user, params }) {
@@ -409,6 +435,7 @@ export const itemActions = {
 }
 
 export const formActions = {
+  createPost,
   login,
   forgotPassword,
   createGroup,

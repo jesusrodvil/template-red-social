@@ -1,6 +1,27 @@
 import appConfig from './app.config'
 
 const formsConfig = {
+  createPost: {
+    title: 'Nueva publicación',
+    submitLabel: 'Publicar',
+    submit: 'createPost',
+    fields: [
+      {
+        name: 'text',
+        label: 'Descripción',
+        type: 'textarea',
+        required: true,
+        maxLength: appConfig.limits.postText,
+        placeholder: '¿Qué quieres contar?',
+        help: 'Se publicará en todos tus grupos.',
+      },
+      {
+        name: 'image',
+        label: 'Imagen',
+        type: 'image',
+      },
+    ],
+  },
   createGroup: {
     title: 'Crear grupo',
     submitLabel: 'Crear',
