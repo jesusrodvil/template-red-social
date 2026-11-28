@@ -1,29 +1,15 @@
-import { Link, NavLink } from 'react-router'
-import { menuConfig, pages } from '../../config/pages.config'
-import { useApp } from '../../context/app-context'
-import { formatUsername } from '../../utils/format'
-import Avatar from '../ui/Avatar'
+import { NavLink } from 'react-router'
 import Icon from '../ui/Icon'
+import UserSummary from './UserSummary'
+import { useMenuItems } from './useMenuItems'
 import './Sidebar.css'
 
 export default function Sidebar() {
-  const { user, logout } = useApp()
-  const actions = { logout }
-  const username = formatUsername(user)
-
-  const menuPages = pages.filter(
-    (page) => page.visible && page.showInMenu && page.roles.includes(user.role),
-  )
+  const { menuPages, footerItems } = useMenuItems()
 
   return (
     <aside className="sidebar">
-      <Link to={menuConfig.userSectionLink} className="sidebar__user">
-        <Avatar user={user} size={56} />
-        <div>
-          <p className="sidebar__name">{user.name}</p>
-          {username && <p className="sidebar__username">{username}</p>}
-        </div>
-      </Link>
+      <UserSummary />
 
       <nav className="sidebar__nav">
         {menuPages.map((page) => (
@@ -35,7 +21,7 @@ export default function Sidebar() {
       </nav>
 
       <div className="sidebar__footer">
-        {menuConfig.footerItems.map((item) =>
+        {footerItems.map((item) =>
           item.path ? (
             <NavLink
               key={item.id}
@@ -51,7 +37,7 @@ export default function Sidebar() {
               key={item.id}
               type="button"
               className="sidebar__icon-btn"
-              onClick={actions[item.action]}
+              onClick={item.onClick}
               title={item.label}
               aria-label={item.label}
             >

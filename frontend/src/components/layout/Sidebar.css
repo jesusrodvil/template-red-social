@@ -9,32 +9,6 @@
   border-inline: 1px solid var(--border);
 }
 
-.sidebar__user {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1.25rem;
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid var(--border);
-}
-
-.sidebar__user:hover {
-  background: var(--primary-soft);
-}
-
-.sidebar__name {
-  margin: 0;
-  font-weight: 600;
-  color: var(--text-strong);
-}
-
-.sidebar__username {
-  margin: 0;
-  font-size: 0.875rem;
-  color: var(--text-muted);
-}
-
 .sidebar__nav {
   display: flex;
   flex: 1;

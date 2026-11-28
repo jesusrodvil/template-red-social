@@ -125,6 +125,7 @@ export const pages = [
 
 export const menuConfig = {
   userSectionLink: '/cuenta',
+  mobileTabs: ['grupos', 'inicio', 'notificaciones'],
   footerItems: [
     { id: 'ajustes', label: 'Ajustes', icon: 'Settings', path: '/ajustes' },
     { id: 'logout', label: 'Cerrar sesión', icon: 'LogOut', action: 'logout' },
